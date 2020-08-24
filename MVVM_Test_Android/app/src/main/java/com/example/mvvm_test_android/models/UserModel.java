@@ -1,40 +1,51 @@
 package com.example.mvvm_test_android.models;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import android.text.TextUtils;
 import android.util.Patterns;
+
+import com.example.mvvm_test_android.BR;
 import com.example.mvvm_test_android.views.MainActivity;
 
-public class UserModel{
+public class UserModel extends BaseObservable {
     @NonNull
-    private String mName;
+    public String name;
     @NonNull
-    private String mPassword;
-    private static int failedAttempt = 0;
-    private static int MAX_ATTEMPT = 5;
+    public String password;
 
-    public UserModel(@NonNull final String name, @NonNull final String password) {
-        mName = name;
-        mPassword = password;
-        failedAttempt = 0;
-    }
-
-    public static void setFailedAttempt() {
-        failedAttempt++;
-        if ( failedAttempt == MAX_ATTEMPT ) {
-            MainActivity.DisableLogin();
-        }
+    public UserModel(String name, String password) {
+        this.name = name;
+        this.password = password;
     }
 
     @NonNull
-    public String getName() { return mName; }
-    public void setName(@NonNull final String Name) { mName = Name; }
+    @Bindable
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+        notifyPropertyChanged(BR.name);
+    }
 
     @NonNull
-    public String getPassword() { return mPassword; }
-    public void setPassword(@NonNull final String password) { mPassword = password; }
+    @Bindable
+    public String getPassword() {
+        return this.password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+        notifyPropertyChanged(BR.password);
+    }
 
     public boolean isInputDataValid() {
-        return true;
+        if(this.name.equals("user") && this.password.equals("pass")){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
